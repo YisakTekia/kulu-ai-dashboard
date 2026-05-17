@@ -309,7 +309,6 @@ export default function BillingPage() {
                         <TableRow>
                             <TableHead className="font-bold text-slate-500">User</TableHead>
                             <TableHead className="font-bold text-slate-500">Role & Bank</TableHead>
-                            {/* HERE IS THE WORK CALCULATION COLUMN */}
                             <TableHead className="font-bold text-slate-500">Work Breakdown</TableHead>
                             <TableHead className="font-bold text-slate-500">Total</TableHead>
                             <TableHead className="font-bold text-slate-500">Status</TableHead>
@@ -343,7 +342,7 @@ export default function BillingPage() {
                                     </div>
                                 </TableCell>
                                 
-                                {/* WORK BREAKDOWN COLUMN */}
+                               
                                 <TableCell>
                                     <div className="flex flex-col">
                                         <span className="font-bold text-slate-800 text-sm">
@@ -387,7 +386,7 @@ export default function BillingPage() {
         </TabsContent>
       </Tabs>
 
-      {/* --- INVOICE DETAIL MODAL --- */}
+
       <Dialog open={!!selectedInvoice} onOpenChange={(open) => !open && setSelectedInvoice(null)}>
          <DialogContent className="max-w-2xl bg-white p-0 overflow-hidden rounded-3xl border-none shadow-2xl">
             {selectedInvoice && (
@@ -471,7 +470,7 @@ export default function BillingPage() {
          </DialogContent>
       </Dialog>
 
-      {/* --- RATES SETTINGS MODAL --- */}
+      
       <Dialog open={isRatesOpen} onOpenChange={setIsRatesOpen}>
          <DialogContent className="max-w-md rounded-2xl">
             <DialogHeader>

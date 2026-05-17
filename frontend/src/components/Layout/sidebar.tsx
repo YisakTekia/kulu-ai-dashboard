@@ -3,17 +3,20 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { 
   LayoutDashboard, Globe, Mic, FileType, UploadCloud,
   FolderKanban, Users, CheckSquare, PieChart, 
-  Settings, LogOut, ChevronDown, ChevronRight 
+  Settings, LogOut, ChevronDown, ChevronRight,
+  Wallet, Activity, ScrollText
 } from "lucide-react";
 
 export default function Sidebar() {
   const navigate = useNavigate();
   const location = useLocation();
   
-  // Sidebar State
+  // ሁሉንም ግሩፖች ክፍት አድርገን እንጀምር (ለአጠቃቀም እንዲመች)
   const [openGroups, setOpenGroups] = useState<{[key: string]: boolean}>({ 
     "projects": true, 
-    "users": true 
+    "users": true,
+    "finance": true,
+    "monitoring": true
   });
 
   const handleLogout = () => {
@@ -31,7 +34,7 @@ export default function Sidebar() {
   return (
     <aside className="hidden md:flex flex-col w-[260px] bg-white h-screen fixed left-0 top-0 z-30 border-r border-gray-100 shadow-[2px_0_20px_rgba(0,0,0,0.02)] overflow-y-auto no-scrollbar">
       
-      {/* 1. BRAND LOGO */}
+      {/* BRAND LOGO */}
       <div className="h-16 flex items-center px-6 border-b border-gray-50/50">
         <div className="flex items-center gap-2.5">
           <div className="relative flex items-center justify-center">
@@ -42,10 +45,10 @@ export default function Sidebar() {
         </div>
       </div>
 
-      {/* 2. NAVIGATION */}
+      {/* NAVIGATION ITEMS */}
       <nav className="flex-1 px-4 space-y-6 py-6">
         
-        {/* Dashboard Hero Button */}
+        {/* DASHBOARD */}
         <Link to="/dashboard">
           <div className={`flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all duration-200 group ${
               isLinkActive("/dashboard") 
@@ -57,7 +60,7 @@ export default function Sidebar() {
           </div>
         </Link>
 
-        {/* GROUP 1: PROJECTS */}
+        {/* 1. PROJECTS GROUP */}
         <div>
           <div className="px-4 mb-2 flex items-center justify-between">
             <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">Projects</span>
@@ -86,7 +89,7 @@ export default function Sidebar() {
           </div>
         </div>
 
-        {/* GROUP 2: WORKFORCE */}
+{/* 4. TEAM GROUP */}
         <div>
           <div className="px-4 mb-2">
             <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">Team</span>
@@ -108,24 +111,75 @@ export default function Sidebar() {
                   <SidebarLink to="/users" label="All Users" isActive={isLinkActive("/users")} isDot dotColor="bg-slate-400" />
                   <SidebarLink to="/users/supervisors" label="Supervisors" isActive={isLinkActive("/users/supervisors")} isDot dotColor="bg-blue-400" />
                   <SidebarLink to="/users/admins" label="Admins" isActive={isLinkActive("/users/admins")} isDot dotColor="bg-purple-400" />
-                  <SidebarLink to="/users/suspended" label="Suspended" isActive={isLinkActive("/users/suspended")} isDot dotColor="bg-red-400" />
+                 
+              </div>
+            )}
+          </div>
+        </div> 
+        {/* 2. FINANCE GROUP  */}
+        <div>
+          <div className="px-4 mb-2">
+            <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">Finance</span>
+          </div>
+          <div className="space-y-1">
+            <button 
+              onClick={() => toggleGroup("finance")}
+              className="w-full flex items-center justify-between px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 group"
+            >
+              <div className="flex items-center gap-3">
+                 <Wallet className="h-4 w-4 text-slate-400 group-hover:text-slate-600" />
+                 <span>Billing</span>
+              </div>
+              {openGroups["finance"] ? <ChevronDown className="h-3.5 w-3.5 text-slate-400" /> : <ChevronRight className="h-3.5 w-3.5 text-slate-400" />}
+            </button>
+            
+            {openGroups["finance"] && (
+              <div className="relative ml-4 pl-4 border-l border-slate-100 space-y-1 mt-1">
+                  <SidebarLink to="/finance/billing" icon={Wallet} label="Payouts & Invoices" color="text-emerald-500" isActive={isLinkActive("/finance/billing")} />
               </div>
             )}
           </div>
         </div>
 
-        {/* GROUP 3: QUALITY */}
+        {/* 3. MONITORING & ACTIVITIES  */}
+        <div>
+          <div className="px-4 mb-2">
+            <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">Monitoring</span>
+          </div>
+          <div className="space-y-1">
+            <button 
+              onClick={() => toggleGroup("monitoring")}
+              className="w-full flex items-center justify-between px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 group"
+            >
+              <div className="flex items-center gap-3">
+                 <Activity className="h-4 w-4 text-slate-400 group-hover:text-slate-600" />
+                 <span>Logs & History</span>
+              </div>
+              {openGroups["monitoring"] ? <ChevronDown className="h-3.5 w-3.5 text-slate-400" /> : <ChevronRight className="h-3.5 w-3.5 text-slate-400" />}
+            </button>
+            
+            {openGroups["monitoring"] && (
+              <div className="relative ml-4 pl-4 border-l border-slate-100 space-y-1 mt-1">
+                  <SidebarLink to="/activities/global" icon={ScrollText} label="Global Activity Log" color="text-amber-500" isActive={isLinkActive("/activities/global")} />
+                  <SidebarLink to="/analytics/reports" icon={PieChart} label="Reports & Analytics" color="text-indigo-500" isActive={isLinkActive("/analytics/reports")} />
+              </div>
+            )}
+          </div>
+        </div>
+
+        
+
+        {/* QUALITY (Reviews moved here as single item) */}
         <div>
           <div className="px-4 mb-2">
             <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">Quality</span>
           </div>
           <SidebarLink to="/reviews" icon={CheckSquare} label="Reviews & Approvals" color="text-green-500" isActive={isLinkActive("/reviews")} />
-          <SidebarLink to="/reports" icon={PieChart} label="Reports & Analysis" color="text-indigo-500" isActive={isLinkActive("/reports")} />
         </div>
         
       </nav>
 
-      {/* BOTTOM: LOGOUT */}
+      {/* FOOTER / SETTINGS */}
       <div className="p-4 border-t border-gray-100 bg-gray-50/30">
           <Link to="/settings" className="flex items-center gap-3 px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 group transition-colors rounded-lg hover:bg-white hover:shadow-sm">
                 <Settings className="h-4 w-4 text-slate-400 group-hover:text-slate-600" />
@@ -140,7 +194,7 @@ export default function Sidebar() {
   );
 }
 
-// Reusable Link Component (To keep code clean)
+// Helper Component for Links
 function SidebarLink({ to, icon: Icon, label, color, isActive, isDot, dotColor }: any) {
   return (
     <Link to={to} className={`flex items-center gap-3 py-2 px-3 rounded-lg text-sm transition-colors ${isActive ? "bg-slate-50 text-slate-900 font-medium" : "text-slate-500 hover:text-slate-800 hover:bg-slate-50"}`}>

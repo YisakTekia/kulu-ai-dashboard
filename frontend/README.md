@@ -1,73 +1,137 @@
-# React + TypeScript + Vite
+# 🚀 Kulu AI Dashboard (Frontend)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the frontend user interface for the **Kulu AI** platform. It allows users to manage Translation, Audio Recording, and Transcription tasks. The project is built using React, TypeScript, and Shadcn UI.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🛠️ Tech Stack 
 
-## React Compiler
+- **Framework:** React + Vite
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS
+- **Components:** Shadcn UI
+- **Icons:** Lucide React
+- **State Management:** React Hooks
+- **Package Manager:** NPM
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## ⚙️ Prerequisites 
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Before you begin, ensure you have the following installed:
+- [Node.js](https://nodejs.org/) (v16 or higher)
+- [Git](https://git-scm.com/)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## 📥 Installation 
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+To set up the project locally, follow these steps:
+
+1. **Clone the repository:**
+   ```bash
+   git clone [https://gitlab.com/yisak.tekia/kulu-ai-dashboard.git](https://gitlab.com/yisak.tekia/kulu-ai-dashboard.git)
+   cd kulu-ai-dashboard
+
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. **Install dependencies:**
+*(This downloads all necessary libraries)*
+```bash
+npm install
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
+
+
+
+---
+
+## ▶️ How to Run
+
+To start the development server:
+
+1. **Run the command:**
+```bash
+npm run dev
+
+```
+
+
+2. **Open in Browser:**
+Navigate to `http://localhost:5173` to view the dashboard.
+
+---
+
+## 📂 Project Structure
+
+```
+src/
+├── components/         # Reusable UI components
+│   ├── layout/        # Sidebar, Header
+│   ├── tasks/         # Tables, Stats, Dialogs for Tasks
+│   ├── ui/            # Shadcn UI base components
+│   └── users/         # User Profile Dialogs
+├── pages/             # Main Application Pages
+│   ├── DashboardHome.tsx
+│   └── tasks/         # Translation, Recording, Transcription pages
+├── App.tsx            # Main Entry & Routing
+└── main.tsx
+
+```
+
+---
+
+## 🔗 API Integration & Swagger
+
+This frontend connects to the Kulu AI Backend. We use **Swagger UI** to understand the API endpoints.
+
+* **Swagger Docs Link:** *(Ask Backend Team/Admin)*
+* **API Base URL:** Configure inside `.env` file (e.g., `VITE_API_URL=http://localhost:8000`)
+
+To fetch data, we use `axios` following the structure in Swagger docs.
+
+---
+
+## 🌲 Git Workflow
+
+Common commands used in this project:
+
+**1. Check Status:**
+
+```bash
+git status
+
+```
+
+**2. Add Changes:**
+
+```bash
+git add .
+
+```
+
+**3. Commit Changes:**
+
+```bash
+git commit -m "Description of changes"
+
+```
+
+**4. Push to GitLab:**
+
+```bash
+git push origin main
+
+```
+
+**5. Pull Updates:**
+
+```bash
+git pull origin main
+
+```
+
+```
+
+---
+

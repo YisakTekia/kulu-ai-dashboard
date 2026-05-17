@@ -3,8 +3,6 @@ import { AuthRequest } from '../middleware/authMiddleware';
 import Submission from '../models/submission';
 import Task from '../models/task';
 
-// @desc    Submit completed work
-// @route   POST /api/submissions/:taskId
 export const submitWork = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const { contentText, audioFileUrl } = req.body;

@@ -13,13 +13,13 @@ export default function Header() {
     <header className="h-16 bg-white flex items-center justify-between px-8 sticky top-0 z-20 shadow-sm/30 border-b border-gray-100">
       
       <div className="flex items-center flex-1 max-w-xl">
-          {/* Mobile Menu Trigger */}
+          
           <Sheet>
           <SheetTrigger asChild><Button variant="ghost" size="icon" className="md:hidden mr-4"><Menu/></Button></SheetTrigger>
           <SheetContent side="left">Sidebar Content...</SheetContent>
         </Sheet>
 
-        {/* Search Bar */}
+        
         <div className="hidden md:flex items-center relative w-full group">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 group-focus-within:text-blue-500 transition-colors" />
           <input 
@@ -42,7 +42,7 @@ export default function Header() {
         
         <div className="h-5 w-[1px] bg-slate-200 mx-1"></div>
 
-        {/* User Profile */}
+        
         <div className="flex items-center gap-3 cursor-pointer p-1 hover:bg-slate-50 rounded-full transition-colors pr-3">
           <Avatar className="h-8 w-8 border border-slate-100 shadow-sm">
             <AvatarImage src="https://github.com/shadcn.png" />

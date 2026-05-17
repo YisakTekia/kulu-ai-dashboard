@@ -7,9 +7,7 @@ const router = express.Router();
 
 router.post('/', protect, authorize('ADMIN'), createTask);
 
-
 router.get('/available', protect, getAvailableTasks);
-
 
 router.post('/:id/assign', protect, assignTask);
 

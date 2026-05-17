@@ -1,11 +1,12 @@
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom"; 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Lock, Mail, Loader2 } from "lucide-react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { toast } from "sonner"; 
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -20,7 +21,10 @@ export default function Login() {
     setError("");
 
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", {
+      
+      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+
+      const res = await axios.post(`${apiUrl}/auth/login`, {
         email,
         password,
       });
@@ -31,13 +35,13 @@ export default function Login() {
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data));
       
-      
-     navigate("/dashboard");
-      
+      toast.success("Successfully logged in!");
+      navigate("/dashboard");
 
     } catch (err: any) {
-     
-      setError(err.response?.data?.message || "Login failed. Please check your credentials.");
+      const errorMessage = err.response?.data?.message || "Login failed. Please check your credentials.";
+      setError(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -50,6 +54,7 @@ export default function Login() {
           <CardTitle className="text-2xl font-bold text-gray-900">Kulu Annotation</CardTitle>
           <CardDescription>Sign in to your account</CardDescription>
         </CardHeader>
+        
         <form onSubmit={handleLogin}>
           <CardContent className="space-y-4">
             {error && (
@@ -57,6 +62,7 @@ export default function Login() {
                 <span>⚠️</span> {error}
               </div>
             )}
+            
             <div className="space-y-2">
               <Label htmlFor="email">Email Address</Label>
               <div className="relative">
@@ -72,6 +78,7 @@ export default function Login() {
                 />
               </div>
             </div>
+            
             <div className="space-y-2">
               <div className="flex justify-between items-center">
                 <Label htmlFor="password">Password</Label>
@@ -89,10 +96,19 @@ export default function Login() {
               </div>
             </div>
           </CardContent>
-          <CardFooter>
+          
+          <CardFooter className="flex flex-col space-y-4">
             <Button className="w-full bg-blue-600 hover:bg-blue-700" type="submit" disabled={loading}>
               {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : "Sign In"}
             </Button>
+
+            
+            <p className="text-center text-sm text-gray-600">
+              Don't have an account?{" "}
+              <Link to="/register" className="text-blue-600 hover:underline font-medium">
+                Sign up
+              </Link>
+            </p>
           </CardFooter>
         </form>
       </Card>

@@ -3,15 +3,19 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../models/user';
 
+
 const generateToken = (id: string) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET || 'defaultSecret', { expiresIn: '30d' });
+  return jwt.sign({ id }, process.env.JWT_SECRET as string, {
+    expiresIn: '30d',
+  });
 };
 
-// Register
-export const registerUser = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const { fullName, email, password, role, languages } = req.body;
+// 1. REGISTER USER
+export const registerUser = async (req: Request, res: Response) => {
+  
+  const { name, email, password, role } = req.body;
 
+  try {
     const userExists = await User.findOne({ email });
     if (userExists) {
       res.status(400).json({ message: 'User already exists' });
@@ -23,54 +27,68 @@ export const registerUser = async (req: Request, res: Response): Promise<void> =
 
     
     const user = await User.create({
-      fullName,
+      fullName: name, 
       email,
       password: hashedPassword,
-      role: role || 'USER', 
-      status: 'ACTIVE',
-      languages: languages || []
+      role: role || 'TRANSLATOR',
     });
 
     if (user) {
       res.status(201).json({
-        _id: user.id,
-        fullName: user.fullName,
+        _id: user._id, 
+        name: user.fullName,
         email: user.email,
         role: user.role,
-        token: generateToken(user.id as string),
+        token: generateToken(user._id.toString()),
       });
+    } else {
+      res.status(400).json({ message: 'Invalid user data' });
     }
   } catch (error) {
-    res.status(500).json({ message: (error as Error).message });
+    console.error(error); 
+    res.status(500).json({ message: 'Server error' });
   }
 };
 
-// Login
-export const loginUser = async (req: Request, res: Response): Promise<void> => {
+// 2. LOGIN USER
+export const loginUser = async (req: Request, res: Response) => {
+  const { email, password } = req.body;
+
   try {
-    const { email, password } = req.body;
     const user = await User.findOne({ email });
 
-    
     if (user && (await bcrypt.compare(password, user.password))) {
-      
-      //  [cite: 52-55]
-      if (user.softDeleted || user.status !== 'ACTIVE') {
-         res.status(403).json({ message: 'Your account is suspended or inactive.' });
-         return;
-      }
-
       res.json({
-        _id: user.id,
-        fullName: user.fullName,
+        _id: user._id,
+        name: user.fullName, 
         email: user.email,
         role: user.role,
-        token: generateToken(user.id as string),
+        token: generateToken(user._id.toString()),
       });
     } else {
       res.status(401).json({ message: 'Invalid email or password' });
     }
   } catch (error) {
-    res.status(500).json({ message: (error as Error).message });
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// 3. GET USER PROFILE
+export const getUserProfile = async (req: any, res: Response) => {
+  try {
+    const user = await User.findById(req.user.id).select('-password');
+
+    if (user) {
+      res.json({
+        _id: user._id,
+        name: user.fullName, 
+        email: user.email,
+        role: user.role,
+      });
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Server error retrieving profile' });
   }
 };

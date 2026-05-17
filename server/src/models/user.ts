@@ -18,8 +18,8 @@ const UserSchema: Schema = new Schema(
     password: { type: String, required: true },
     role: { 
       type: String, 
-      enum: ['USER', 'SUPERVISOR', 'ADMIN', 'SUPER_ADMIN'], 
-      default: 'USER' 
+      enum: ['user', 'admin', 'translator', 'voice_artist', 'transcriber', 'reviewer'],
+  default: 'user', 
     },
     status: {
       type: String,

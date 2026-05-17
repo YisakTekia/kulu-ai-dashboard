@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, Filter } from "lucide-react";
+import { Search, Filter, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
@@ -7,12 +7,11 @@ import { toast } from "sonner";
 import TaskStats from "@/components/Layout/Tasks/taskStates";
 import TaskTable from "@/components/Layout/Tasks/taskTable";
 import CreateTaskSheet from "@/components/Layout/Tasks/createTaskSheet";
-
-
 import ViewTaskDialog from "@/components/Layout/Tasks/viewTaskDialog";
 import EditTaskSheet from "@/components/Layout/Tasks/EditTaskSheet";
 import DeleteTaskAlert from "@/components/Layout/Tasks/DeleteTaskAlert";
 import UserProfileDialog from "@/components/Layout/User/userProfile"; 
+import BulkImportDialog from "@/components/Layout/Tasks/bulkImport";
 
 const INITIAL_DATA = [
   {
@@ -59,14 +58,14 @@ export default function TranslationTasks() {
   const [statusFilter, setStatusFilter] = useState("All Status");
   const [languageFilter, setLanguageFilter] = useState("All Languages");
   
-  // --- STATE FOR ACTIONS ---
   const [selectedTask, setSelectedTask] = useState<any>(null);
   const [selectedUser, setSelectedUser] = useState<any>(null); 
   const [isViewOpen, setIsViewOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [isUserOpen, setIsUserOpen] = useState(false); 
-  // --- HANDLERS ---
+  const [isBulkImportOpen, setIsBulkImportOpen] = useState(false);
+
   const handleView = (id: string) => {
     const task = tasks.find(t => t.id === id);
     setSelectedTask(task);
@@ -93,13 +92,11 @@ export default function TranslationTasks() {
     }
   };
 
- 
   const handleUserClick = (user: any) => {
     setSelectedUser(user);
     setIsUserOpen(true);
   };
 
-  // --- FILTERS ---
   const filteredTasks = tasks.filter(task => {
     const matchesSearch = 
       task.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -115,19 +112,22 @@ export default function TranslationTasks() {
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
       
-      {/* HEADER & STATS */}
       <div className="flex flex-col gap-6">
         <div className="flex justify-between items-end">
           <div>
             <h1 className="text-2xl font-bold text-slate-900">Translation Projects</h1>
             <p className="text-slate-500 text-sm mt-1">Manage and track translation progress.</p>
           </div>
-          <CreateTaskSheet />
+          <div className="flex gap-2">
+            <Button variant="outline" onClick={() => setIsBulkImportOpen(true)}>
+               <Upload className="w-4 h-4 mr-2" /> Bulk Import
+            </Button>
+            <CreateTaskSheet />
+          </div>
         </div>
         <TaskStats />
       </div>
 
-      {/* FILTERS */}
       <div className="bg-white p-4 rounded-xl border border-slate-100 shadow-sm flex flex-col sm:flex-row gap-4 justify-between items-center">
         <div className="relative w-full sm:w-96 group">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 group-focus-within:text-blue-500 transition-colors" />
@@ -162,7 +162,7 @@ export default function TranslationTasks() {
             <option>Tigrigna</option>
             <option>Oromiffa</option>
           </select>
-           
+            
           <div className="h-6 w-[1px] bg-slate-200 mx-1"></div>
 
           <Button variant="outline" size="sm" className="text-slate-600 border-slate-200">
@@ -171,7 +171,6 @@ export default function TranslationTasks() {
         </div>
       </div>
 
-      {/* TABLE */}
       <TaskTable 
         tasks={filteredTasks} 
         onView={handleView}
@@ -179,8 +178,6 @@ export default function TranslationTasks() {
         onDelete={handleDeleteClick}
         onUserClick={handleUserClick} 
       />
-
-      {/* --- MODALS & SHEETS --- */}
       
       <ViewTaskDialog 
         open={isViewOpen} 
@@ -199,12 +196,19 @@ export default function TranslationTasks() {
         onOpenChange={setIsDeleteOpen} 
         onConfirm={confirmDelete} 
       />
-
-     
+      
       <UserProfileDialog
         isOpen={isUserOpen}
         onClose={setIsUserOpen}
         user={selectedUser}
+      />
+
+      <BulkImportDialog 
+        open={isBulkImportOpen} 
+        onOpenChange={setIsBulkImportOpen}
+        onSuccess={() => {
+           toast.success("Tasks imported successfully");
+        }} 
       />
 
     </div>

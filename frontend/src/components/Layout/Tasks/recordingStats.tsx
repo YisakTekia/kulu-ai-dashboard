@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 export default function RecordingStats() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-      {/* Card 1: Total Duration */}
+     
       <Card className="border-none shadow-sm bg-white">
         <CardContent className="p-4 flex items-center gap-4">
           <div className="p-3 bg-red-50 rounded-xl">
@@ -17,7 +17,7 @@ export default function RecordingStats() {
         </CardContent>
       </Card>
 
-      {/* Card 2: Validated Audio */}
+      
       <Card className="border-none shadow-sm bg-white">
         <CardContent className="p-4 flex items-center gap-4">
           <div className="p-3 bg-green-50 rounded-xl">
@@ -35,7 +35,7 @@ export default function RecordingStats() {
         </CardContent>
       </Card>
 
-      {/* Card 3: Active Recording */}
+      
       <Card className="border-none shadow-sm bg-white">
         <CardContent className="p-4 flex items-center gap-4">
           <div className="p-3 bg-blue-50 rounded-xl">

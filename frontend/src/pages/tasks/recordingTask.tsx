@@ -3,7 +3,6 @@ import { Search, Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-
 import RecordingStats from "@/components/Layout/Tasks/recordingStats";
 import RecordingTable from "@/components/Layout/Tasks/recordingTable";
 import CreateRecordingSheet from "@/components/Layout/Tasks/createRecordingSheet";
@@ -48,11 +47,11 @@ export default function RecordingTasks() {
   const [tasks, setTasks] = useState(RECORDING_DATA);
   const [searchTerm, setSearchTerm] = useState("");
 
-  // --- USER PROFILE STATE ---
+  
   const [selectedUser, setSelectedUser] = useState<any>(null);
   const [isUserOpen, setIsUserOpen] = useState(false);
 
-  // --- HANDLERS ---
+  
   const handleView = (id: string) => {
     toast.info(`Viewing audio details for ${id}`);
   };
